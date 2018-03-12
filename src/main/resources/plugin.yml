@@ -1,0 +1,12 @@
+name: Staff
+version: ${project.version}
+main: me.drawlin.staff.Staff
+authors: [drawlin]
+description: Staff plugin for GitHub.
+commands:
+    staffmode:
+        aliases: [sm, mod, staff, h, admin]
+        description: Toggle staff mode.
+    vanish:
+        aliases: [v, hide, show]
+        description: Hide yourself from non-staff members.
