@@ -30,5 +30,7 @@ public class JoinListener implements Listener{
                 }
             }
         }
+
+        staff.getStaffManager().sendMessage("&b" + e.getPlayer().getName() + " connected.");
     }
 }

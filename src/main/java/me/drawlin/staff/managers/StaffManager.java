@@ -107,6 +107,14 @@ public class StaffManager {
         return getVanishModePlayers().contains(player.getUniqueId());
     }
 
+    public void sendMessage(String message) {
+        for(Player players : Bukkit.getServer().getOnlinePlayers()) {
+            if(players.hasPermission("staff.staff")) {
+                players.sendMessage(ChatUtil.color(message));
+            }
+        }
+    }
+
     public void clear() {
         getLocation().clear();
         getGameMode().clear();

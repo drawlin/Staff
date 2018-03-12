@@ -25,37 +25,47 @@ public class ReportCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(!(sender instanceof Player)) {
             sender.sendMessage(ChatUtil.color("&cYou are not a player."));
-        }else if((args.length == 0) || (args.length == 1)){
-            sender.sendMessage(ChatUtil.color("&cUsage: /report <player> <reason...>"));
-        }else if(args.length >= 1) {
-            Player player = (Player) sender;
-            if(cooldown.containsKey(player.getUniqueId()) && cooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
-                player.sendMessage(ChatUtil.color("&cYou are currently on report cooldown."));
-            }else {
-                Player target = Bukkit.getServer().getPlayer(args[0]);
-                if (target != null) {
-                    String reason;
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 1; i < args.length; i++) {
-                        stringBuilder.append(args[i] + " ");
-                    }
-                    reason = stringBuilder.toString();
+            return true;
+        }
+        Player player = (Player) sender;
 
-                    for (Player players : Bukkit.getServer().getOnlinePlayers()) {
-                        if (players.hasPermission("staff.staff")) {
-                            players.sendMessage(ChatUtil.color("&9[Report] &b" + sender.getName() + " &9reported &b" + target.getName() + "&9."));
-                            players.sendMessage(ChatUtil.color("&9Reason: &7" + reason));
-                        }
-                    }
-                    sender.sendMessage(ChatUtil.color("&aYou have successfully reported " + target.getName() + "."));
-                    cooldown.put(player.getUniqueId(), System.currentTimeMillis() + (1000 * 120));
-                }else{
-                    player.sendMessage(ChatUtil.color("&cPlayer '" + args[0] + "' cannot be found."));
-                }
-            }
+        if(!(args.length >= 2)) {
+            player.sendMessage(ChatUtil.color("&cUsage: /report <player> <reason...>"));
+            return true;
         }
 
+        if(onCooldown(player)) {
+            player.sendMessage(ChatUtil.color("&cYou are currently on cooldown."));
+            return true;
+        }
+
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+
+        if(target == null) {
+            player.sendMessage(ChatUtil.color("&cPlayer '" + args[0] + "' cannot be found."));
+            return true;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+            stringBuilder.append(args[i] + " ");
+        }
+
+        staff.getStaffManager().sendMessage("&9[Report] &b" + player.getName() + " &9reported &b" + target.getName() + " &9for &7" + stringBuilder.toString());
+        applyCooldown(player);
+
         return true;
+    }
+
+    private boolean onCooldown(Player player) {
+        if(cooldown.containsKey(player.getUniqueId()) && cooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void applyCooldown(Player player) {
+        cooldown.put(player.getUniqueId(), System.currentTimeMillis() + (1000 * 120));
     }
 
 }

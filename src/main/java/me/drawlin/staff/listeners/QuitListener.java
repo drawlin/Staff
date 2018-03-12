@@ -20,6 +20,8 @@ public class QuitListener implements Listener{
         if(e.getPlayer().hasPermission("staff.staff")) {
             staff.getStaffManager().unapplyStaffMode(e.getPlayer());
         }
+
+        staff.getStaffManager().sendMessage("&b" + e.getPlayer().getName() + " disconnected.");
     }
 
 }
