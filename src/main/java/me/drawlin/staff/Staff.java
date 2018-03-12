@@ -1,5 +1,7 @@
 package me.drawlin.staff;
 
+import me.drawlin.staff.commands.ReportCommand;
+import me.drawlin.staff.commands.RequestCommand;
 import me.drawlin.staff.commands.StaffModeCommand;
 import me.drawlin.staff.commands.VanishCommand;
 import me.drawlin.staff.listeners.JoinListener;
@@ -32,6 +34,8 @@ public final class Staff extends JavaPlugin {
     private void registerCommands() {
         new StaffModeCommand(this);
         new VanishCommand(this);
+        new ReportCommand(this);
+        new RequestCommand(this);
     }
 
     private void registerListeners() {

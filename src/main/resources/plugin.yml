@@ -10,3 +10,9 @@ commands:
     vanish:
         aliases: [v, hide, show]
         description: Hide yourself from non-staff members.
+    report:
+        aliases: [hacker]
+        description: Report a player if they are breaking the rules.
+    request:
+        aliases: [helpop]
+        description: Request help from staff.
